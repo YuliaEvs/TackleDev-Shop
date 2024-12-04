@@ -1,6 +1,9 @@
 import { Product } from "./product";
 
 export class CartItem {
+    addToCart(theCartItem: CartItem) {
+      throw new Error('Method not implemented.');
+    }
 
     id: string;
     name: string;
