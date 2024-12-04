@@ -18,7 +18,7 @@ export class CartService {
 
     // Check if we already have the item in the cart
     let alreadyExistsInCart: boolean = false;
-    let existingCartItem: CartItem = undefined;
+    let existingCartItem: CartItem | undefined = undefined;
 
     if (this.cartItems.length > 0){
       // Find the item in the cart based on item ID
@@ -35,17 +35,17 @@ export class CartService {
     // Check if we found it
       alreadyExistsInCart = (existingCartItem != undefined);
     }
-    
-    if (alreadyExistsInCart) {
-      //increament the quantity 
-      existingCartItem.quantity++;
+    if (existingCartItem) {
+    // if (alreadyExistsInCart) {
+      // Increament the quantity 
+      existingCartItem!.quantity++;
     }
     else {
       // Add the item to the array
       this.cartItems.push(theCartItem);
     }
 
-    //compute cart total price and total quantity
+    // Compute cart total price and total quantity
     this.computeCartTotals();
   }
 
@@ -55,7 +55,7 @@ export class CartService {
     let totalQuanityValue: number = 0;
 
     for (let currentCartItem of this.cartItems){
-      totalPriceValue += currentCartItem.quantity = currentCartItem.unitPrice;
+      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
       totalQuanityValue += currentCartItem.quantity;
     }
 
