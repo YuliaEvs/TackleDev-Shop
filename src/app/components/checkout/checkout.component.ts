@@ -11,6 +11,9 @@ export class CheckoutComponent implements OnInit {
   checkoutFormGroup!: FormGroup;
   isBillingAddressSame = false; // Track if the billing address is the same as shipping
 
+  totalPrice: number = 0;
+  totalQuantity: number = 0;
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
