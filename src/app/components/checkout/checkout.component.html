@@ -45,8 +45,10 @@
                         <div class="col-md-2"><label>Country</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <select formControlName="country">
-                                    <option>Country</option>
+                                <select formControlName="country" (change)="getStates('shippingAddress')">
+                                    <option *ngFor="let country of countries" [ngValue]="country">
+                                        {{ country.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -75,7 +77,9 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <select formControlName="state">
-                                    <option>State</option>
+                                    <option *ngFor="let state of shippingAddressStates" [ngValue]="state">
+                                        {{ state.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -107,8 +111,10 @@
                         <div class="col-md-2"><label>Country</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <select formControlName="country">
-                                    <option>Country</option>
+                                <select formControlName="country" (change)="getStates('billingAddress')">
+                                    <option *ngFor="let country of countries" [ngValue]="country">
+                                        {{ country.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -137,7 +143,9 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <select formControlName="state">
-                                    <option>To Do</option>
+                                    <option *ngFor="let state of billingAddressStates" [ngValue]="state">
+                                        {{ state.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -197,10 +205,10 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-2"><label>Experation Month</label></div>
+                        <div class="col-md-2"><label>Expiration Month</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <select formControlName="experationMonth">
+                                <select formControlName="expirationMonth">
                                     <option *ngFor="let month of creditCardMonths">
                                         {{ month }}
                                     </option>
@@ -211,10 +219,10 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-2"><label>Experation Year</label></div>
+                        <div class="col-md-2"><label>Expiration Year</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <select formControlName="experationYear"(change)="handleMonthsAndYears()">
+                                <select formControlName="expirationYear"(change)="handleMonthsAndYears()">
                                     <option *ngFor="let year of creditCardYears">
                                         {{ year }}
                                     </option>

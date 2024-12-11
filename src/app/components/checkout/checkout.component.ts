@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TackleDevShopFromService } from '../../services/tackleDevShopFrom.service';
+import { Country } from '../../common/country';
+import { State } from '../../common/state';
 
 @Component({
   selector: 'app-checkout',
@@ -34,7 +36,7 @@ export class CheckoutComponent implements OnInit {
       customer: this.formBuilder.group({
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
-        email: ['', Validators.required]
+        email: ['', [Validators.required, Validators.email]]
       }),
 
       shippingAddress: this.formBuilder.group({
@@ -67,11 +69,11 @@ export class CheckoutComponent implements OnInit {
     // Populate credit card months
 
     const startMonth: number = new Date().getMonth() + 1;
-    console.log("startMonth: " + startMonth);
+    // console.log("startMonth: " + startMonth);
 
     this.tackleDevFormService.getCreditCardMonths(startMonth).subscribe(
       data => {
-        console.log("Retrived credit card months: " + JSON.stringify(data));
+        // console.log("Retrived credit card months: " + JSON.stringify(data));
         this.creditCardMonths = data;
       }
     );
@@ -80,7 +82,7 @@ export class CheckoutComponent implements OnInit {
 
     this.tackleDevFormService.getCreditCardYears().subscribe(
       data => {
-        console.log("Retrived credit card years: " + JSON.stringify(data));
+        // console.log("Retrived credit card years: " + JSON.stringify(data));
         this.creditCardYears = data;
       }
     );
@@ -89,7 +91,7 @@ export class CheckoutComponent implements OnInit {
 
     this.tackleDevFormService.getCountries().subscribe(
       data => {
-        console.log("Retrieved countries: " + JSON.stringify(data));
+        // console.log("Retrieved countries: " + JSON.stringify(data));
         this.countries = data;
       }
     );
@@ -102,21 +104,26 @@ export class CheckoutComponent implements OnInit {
     if (input.checked) {
       this.checkoutFormGroup.controls['billingAddress']
         .setValue(this.checkoutFormGroup.controls['shippingAddress'].value);
+
+      this.billingAddressStates = this.shippingAddressStates;
     }
     else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
+
+      this.billingAddressStates = [];
     }
   }
 
   onSubmit(): void {
 
     if (this.checkoutFormGroup.valid) {
-      console.log('Form Submitted!', this.checkoutFormGroup.value);
+      // console.log('Form Submitted!', this.checkoutFormGroup.value);
     }
 
-    console.log("Handling the submit button");
-    console.log(this.checkoutFormGroup.get('customer')?.value);
-    console.log("The email address is " + this.checkoutFormGroup.get('customer')?.value.email);
+    // console.log("Handling the submit button");
+    // console.log(this.checkoutFormGroup.get('customer')?.value);
+    // console.log("The email address is " + this.checkoutFormGroup.get('customer')?.value.email);
+    // console.log("The shipping address country is " + this.checkoutFormGroup.get('shippingAddress')?.value.shippingAddress);
   }
 
   handleMonthsAndYears() {
@@ -124,7 +131,7 @@ export class CheckoutComponent implements OnInit {
     const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
 
     const currentYear: number = new Date().getFullYear();
-    const selectedYear: number = Number(creditCardFormGroup?.value.experationYear);
+    const selectedYear: number = Number(creditCardFormGroup?.value.expirationYear);
 
     // If the current year equals the selected year, then start with the current month
     let startMonth: number;
@@ -138,23 +145,23 @@ export class CheckoutComponent implements OnInit {
 
     this.tackleDevFormService.getCreditCardMonths(startMonth).subscribe(
       data => {
-        console.log("Retrived credit card months: " + JSON.stringify(data));
+        // console.log("Retrived credit card months: " + JSON.stringify(data));
         this.creditCardMonths = data;
       }
     );
   }
 
-  etStates(formGroupName: string) {
+  setStates(formGroupName: string) {
 
     const formGroup = this.checkoutFormGroup.get(formGroupName);
 
-    const countryCode = formGroup.value.country.code;
-    const countryName = formGroup.value.country.name;
+    const countryCode = formGroup?.value.country.code;
+    const countryName = formGroup?.value.country.name;
 
-    console.log(`${formGroupName} country code: ${countryCode}`);
-    console.log(`${formGroupName} country name: ${countryName}`);
+    // console.log(`${formGroupName} country code: ${countryCode}`);
+    // console.log(`${formGroupName} country name: ${countryName}`);
 
-    this.luv2ShopFormService.getStates(countryCode).subscribe(
+    this.tackleDevFormService.getStates(countryCode).subscribe(
       data => {
 
         if (formGroupName === 'shippingAddress') {
@@ -165,9 +172,32 @@ export class CheckoutComponent implements OnInit {
         }
 
         // select first item by default
-        formGroup.get('state').setValue(data[0]);
+        formGroup?.get('state')?.setValue(data[0]);
       }
     );
+  }
+
+  getStates(formGroupName: string){
+
+    const formGroup = this.checkoutFormGroup.get(formGroupName);
+
+    const countryCode = formGroup?.value.country.code;
+    const countryName = formGroup?.value.country.code;
+
+    // console.log(`{formGroupName} counttry code: ${countryCode}`);
+    // console.log(`{formGroupName} counttry name: ${countryName}`);
+
+    this.tackleDevFormService.getStates(countryCode).subscribe(
+      data => {
+        if (formGroupName === 'shippingAddress') {
+          this.shippingAddressStates = data;
+        }
+        else {
+          this.billingAddressStates = data;
+        }
+      }
+    );
+
   }
 
 }
