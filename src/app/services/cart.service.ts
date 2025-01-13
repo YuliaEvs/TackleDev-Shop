@@ -10,7 +10,7 @@ export class CartService {
   cartItems: CartItem[] = [];
 
   totalPrice: Subject<number> = new Subject<number>();
-  totalQuanity: Subject<number> = new Subject<number>();
+  totalQuantity: Subject<number> = new Subject<number>();
 
   constructor() { }
 
@@ -53,7 +53,7 @@ export class CartService {
     }
 
     this.totalPrice.next(totalPriceValue);
-    this.totalQuanity.next(totalQuanityValue);
+    this.totalQuantity.next(totalQuanityValue);
 
     this.logCartData(totalPriceValue, totalQuanityValue);
 
@@ -90,7 +90,7 @@ export class CartService {
     const itemIndex = this.cartItems.findIndex(tempCartItem => tempCartItem.id === theCartItem.id);
 
     // If found, remove the item from the array at the given index
-    if (itemIndex > -1) { 
+    if (itemIndex > -1) {
       this.cartItems.splice(itemIndex, 1);
 
       this.computeCartTotals();

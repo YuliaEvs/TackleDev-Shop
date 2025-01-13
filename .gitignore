@@ -5,11 +5,14 @@
 /tmp
 /out-tsc
 /bazel-out
+app/**/*.js
+app/**/*.js.map
 
 # Node
 /node_modules
 npm-debug.log
 yarn-error.log
+bower_components/
 
 # IDEs and editors
 .idea/
@@ -40,3 +43,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Local History for Visual Studio
+.localhistory/
