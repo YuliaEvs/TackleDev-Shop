@@ -278,16 +278,16 @@ input.au-input.au-input-xl{
     display:flex
 }
 
-.au-btn-submit{
-    position:relative;
-    right:0;
-    min-width:95px;
-    color:#fff;
-    border:1px solid #205b8d;
-    -webkit-border-radius:3px;
-    -moz-border-radius:3px;
-    border-radius:43px;
-    background:#205b8d
+.au-btn-submit {
+    position: relative;
+    right: 0;
+    min-width: 95px;
+    color: #fff;
+    border: 1px solid #205b8d;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 43px;
+    background: #205b8d
 }
 
 .au-btn-submit:hover{
