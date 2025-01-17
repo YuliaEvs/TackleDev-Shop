@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import myAppConfig from '../../config/my-app-config';
 import { OKTA_AUTH } from '@okta/okta-angular';
 import { OktaAuth } from '@okta/okta-auth-js';
 import OktaSignIn from '@okta/okta-signin-widget';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,9 @@ export class LoginComponent implements OnInit {
   oktaSignin: any;
 
   constructor(
-    @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
+    @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
+    @Inject(PLATFORM_ID) private platformId: Object)
+    {
     this.oktaSignin = new OktaSignIn({
       logo: 'assets/images/logo.png',
       baseUrl: myAppConfig.oidc.issuer.split('/auth2')[0],
@@ -29,6 +32,15 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if(isPlatformBrowser(this.platformId)){
+      import('@okta/okta-signin-widget').then(module => {
+        const OktaSignIn = module.default;
+        const oktaSignIn = new OktaSignIn({});
+        oktaSignIn.renderEl({ el: '#okta-sign-in'});
+      }).catch(err => console.error('Error loading Okta SignIn Widget:', err));
+    };
+
     this.oktaSignin.remove();
 
     this.oktaSignin.renderEl({
