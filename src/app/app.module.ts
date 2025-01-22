@@ -59,8 +59,6 @@ const routes: Routes = [
 
 ];
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,7 +81,7 @@ const routes: Routes = [
     NgbModule,
     CommonModule,
     ReactiveFormsModule,
-    OktaAuthModule
+    
   ],
 
   providers: [

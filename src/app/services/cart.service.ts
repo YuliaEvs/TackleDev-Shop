@@ -12,7 +12,18 @@ export class CartService {
   totalPrice: Subject<number> = new Subject<number>();
   totalQuantity: Subject<number> = new Subject<number>();
 
-  constructor() { }
+  storage: Storage = localStorage;
+
+  constructor() {
+
+    let data = JSON.parse(this.storage.getItem('cartItems') ?? '[]');
+
+    if (data != null) {
+      this.cartItems = data;
+
+      this.computeCartTotals();
+    }
+   }
 
   addToCart(theCartItem: CartItem) {
 
@@ -57,6 +68,11 @@ export class CartService {
 
     this.logCartData(totalPriceValue, totalQuanityValue);
 
+    this.persistCartItems();
+  }
+
+  persistCartItems(){
+    this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
   }
 
   logCartData(totalPriceValue: number, totalQuanityValue: number) {
