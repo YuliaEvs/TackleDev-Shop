@@ -29,7 +29,7 @@
                 </table>
             </div>
 
-            <div *ngFor="orderHistoryList.length == 0" class="alert alert-warning col-md-12" role="alert">
+            <div *ngIf="orderHistoryList.length == 0" class="alert alert-warning col-md-12" role="alert">
                 No orders found.
             </div>
 
