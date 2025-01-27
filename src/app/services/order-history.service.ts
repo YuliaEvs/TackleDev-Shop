@@ -13,7 +13,7 @@ export class OrderHistoryService {
   constructor(private httpClient: HttpClient) { }
 
   getOrderHistory(theEmail: string): Observable<GetResponseOrderHistory> {
-    const OrderHistoryUrl = `${this.orderUrl}/serach/findByCustomerEmail?email=${theEmail}`;
+    const OrderHistoryUrl = `${this.orderUrl}/serach/findByCustomerEmailOrderByDateCreatedDesc?email=${theEmail}`;
 
     return this.httpClient.get<GetResponseOrderHistory>(OrderHistoryUrl);
   }

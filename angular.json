@@ -113,7 +113,14 @@
               "node_modules/@okta/okta-signin-widget/dist/css/okta-sign-in.min.css"
             ],
             "scripts": [
-               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
+
+            "fileReplacements": [
+              {
+                "replace": "src/app/components/login/login.component.ts",
+                "with": "src/app/components/login/login.component.browser.ts"
+              }
             ]
           }
         }

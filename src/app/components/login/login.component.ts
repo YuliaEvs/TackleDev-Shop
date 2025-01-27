@@ -16,46 +16,48 @@ export class LoginComponent implements OnInit {
 
   constructor(
     @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
-    @Inject(PLATFORM_ID) private platformId: Object)
-    {
-    this.oktaSignin = new OktaSignIn({
-      logo: 'assets/images/logo.png',
-      baseUrl: myAppConfig.oidc.issuer.split('/auth2')[0],
-      clientId: myAppConfig.oidc.clientId,
-      redirectUrl: myAppConfig.oidc.redirectUrl,
-      authParams: {
-        pkce: true,
-        issuer: myAppConfig.oidc.issuer,
-        scopes: myAppConfig.oidc.scopes
-      }
-    });
+    @Inject(PLATFORM_ID) private platformId: Object) {
+    if (typeof window !== 'undefined') {
+      this.oktaSignin = new OktaSignIn({
+        logo: 'assets/images/logo.png',
+        baseUrl: myAppConfig.oidc.issuer.split('/auth2')[0],
+        clientId: myAppConfig.oidc.clientId,
+        redirectUrl: myAppConfig.oidc.redirectUrl,
+        authParams: {
+          pkce: true,
+          issuer: myAppConfig.oidc.issuer,
+          scopes: myAppConfig.oidc.scopes
+        }
+      });
+    }
   }
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      if (isPlatformBrowser(this.platformId)) {
+        import('@okta/okta-signin-widget').then(module => {
+          const OktaSignIn = module.default;
+          const oktaSignIn = new OktaSignIn({});
+          oktaSignIn.renderEl({ el: '#okta-sign-in' });
+        }).catch(err => console.error('Error loading Okta SignIn Widget:', err));
+      };
 
-    if(isPlatformBrowser(this.platformId)){
-      import('@okta/okta-signin-widget').then(module => {
-        const OktaSignIn = module.default;
-        const oktaSignIn = new OktaSignIn({});
-        oktaSignIn.renderEl({ el: '#okta-sign-in'});
-      }).catch(err => console.error('Error loading Okta SignIn Widget:', err));
-    };
+      this.oktaSignin.remove();
 
-    this.oktaSignin.remove();
-
-    this.oktaSignin.renderEl({
-      el: '#okta-sign-in-widgwt'
-    },
-      (response: any) => {
-        if (response.status === 'SUCCESS') {
-
-          this.oktaAuth.signInWithRedirect();
-        }
+      this.oktaSignin.renderEl({
+        el: '#okta-sign-in-widgwt'
       },
-      (error: any) => {
-        throw error;
-      }
-    );
-  }
+        (response: any) => {
+          if (response.status === 'SUCCESS') {
 
+            this.oktaAuth.signInWithRedirect();
+          }
+        },
+        (error: any) => {
+          throw error;
+        }
+      );
+    }
+  }
 }
+
