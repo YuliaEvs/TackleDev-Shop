@@ -29,7 +29,7 @@
               "p-cancelbabel",
               "tiny-emitter",
               "detect-node",
-              "@okta/okta-sign-widget"
+              "@okta/okta-signin-widget"
             ],
             "outputPath": "dist/angular-ecommerce",
             "index": "src/index.html",
