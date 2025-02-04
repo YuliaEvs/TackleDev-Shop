@@ -3,14 +3,15 @@ import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { Country } from '../common/country';
 import { State } from '../common/state';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TackleDevShopFromService {
 
-  private countriesUrl = 'http://localhost:8080/api/countries';
-  private statesUrl = 'http://localhost:8080/api/states';
+  private countriesUrl =  environment.tackledevshopApiUrl + '/countries';
+  private statesUrl = environment.tackledevshopApiUrl + '/states';
 
   constructor(private httpClient: HttpClient) { }
 
