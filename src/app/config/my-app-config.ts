@@ -6,4 +6,5 @@ export default {
         redirectUrl: 'https://localhost:4200/login/callback',
         scopes: ['openid', 'profile', 'email']
     }
+  
 }
